@@ -1,6 +1,6 @@
 // ─── DATOS GLAM. COSMETICK ─────────────────────────────────────────────────────
 // Productos mock para mostrar la web mientras se cargan los reales desde Firebase.
-// Cuando hagas la importación real desde el admin, estos se reemplazan.
+// Cuando hagas la importación real desde el admin, estos se reemplazan kmlkm. 
 
 export const WHATSAPP_NUMBER = '584127398463'; // +58 412 739 8463
 
