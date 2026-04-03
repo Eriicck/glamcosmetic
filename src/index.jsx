@@ -313,9 +313,7 @@ export default function Index({ cartCount = 0, onOpenCart }) {
             <div className="aspect-square rounded-2xl overflow-hidden border border-white/5">
               <img src={general?.aboutImage || ''} alt="GLAM Cosmetic" className="w-full h-full object-cover" loading="lazy" />
             </div>
-            <div className="absolute -bottom-5 -left-5 w-28 h-28 rounded-full bg-[#D2006E]/15 border border-[#D2006E]/30 flex items-center justify-center text-center p-3">
-              <span className="text-[#D2006E] text-[9px] font-bold tracking-widest uppercase leading-tight">Beauty<br />Power</span>
-            </div>
+           
           </div>
         </div>
       </section>
