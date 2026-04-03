@@ -139,15 +139,23 @@ export default function Index({ cartCount = 0, onOpenCart }) {
             <div className="glam-title text-white text-3xl font-bold mb-8">GLAM<br /><span className="italic font-normal text-[#D2006E] text-xl">Cosmetick</span></div>
             <nav className="space-y-6">
               {NAV_LINKS.map(l => (
-                <button key={l.label} onClick={() => l.path.startsWith('#') ? (setMenuOpen(false), document.querySelector(l.path)?.scrollIntoView({ behavior: 'smooth' })) : goTo(l.path)}
+                <button key={l.label} onClick={() => {
+                  setMenuOpen(false);
+                  if (l.path.startsWith('#')) {
+                    document.querySelector(l.path)?.scrollIntoView({ behavior: 'smooth' });
+                  } else {
+                    goTo(l.path);
+                  }
+                }}
                   className="block text-sm font-semibold tracking-[0.2em] uppercase text-white/70 hover:text-[#D2006E] transition-colors text-left">
                   {l.label}
                 </button>
               ))}
             </nav>
             <div className="mt-auto flex gap-4">
+              {/* ✅ FIX: era FacebookIcon (no existe), ahora es Facebook */}
               <a href={general.instagramUrl || '#'} className="text-white/30 hover:text-[#D2006E] transition-colors"><Instagram size={18} /></a>
-              <a href={general.facebookUrl  || '#'} className="text-white/30 hover:text-[#D2006E] transition-colors"><FacebookIcon  size={18} /></a>
+              <a href={general.facebookUrl  || '#'} className="text-white/30 hover:text-[#D2006E] transition-colors"><Facebook   size={18} /></a>
             </div>
           </div>
         </div>
@@ -227,7 +235,7 @@ export default function Index({ cartCount = 0, onOpenCart }) {
               </h2>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-              {visibleCats.map((cat, i) => (
+              {visibleCats.map((cat) => (
                 <button key={cat.id} onClick={() => goTo('/products')}
                   className="group relative overflow-hidden rounded-2xl aspect-[3/4] bg-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
                   {cat.img && (
@@ -325,7 +333,6 @@ export default function Index({ cartCount = 0, onOpenCart }) {
             <div className="aspect-square rounded-2xl overflow-hidden border border-white/5">
               <img src={general.aboutImage || ''} alt="GLAM Cosmetick" className="w-full h-full object-cover" loading="lazy" />
             </div>
-            {/* Decorative badge */}
             <div className="absolute -bottom-5 -left-5 w-28 h-28 rounded-full bg-[#D2006E]/15 border border-[#D2006E]/30 flex items-center justify-center text-center p-3">
               <span className="text-[#D2006E] text-[9px] font-bold tracking-widest uppercase leading-tight">Beauty<br />Power</span>
             </div>
@@ -404,9 +411,7 @@ export default function Index({ cartCount = 0, onOpenCart }) {
             </ul>
             <div className="mt-5 flex items-start gap-2 text-sm">
               <MapPin size={14} className="text-[#D2006E] flex-shrink-0 mt-0.5" />
-              <p className="leading-relaxed text-xs">
-                Venezuela
-              </p>
+              <p className="leading-relaxed text-xs">Venezuela</p>
             </div>
           </div>
         </div>
