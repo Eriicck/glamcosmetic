@@ -126,7 +126,7 @@ export default function Index({ cartCount = 0, onOpenCart }) {
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMenuOpen(false)} />
           <div className="relative ml-auto w-72 bg-[#0C0210] h-full flex flex-col px-8 py-10">
             <button onClick={() => setMenuOpen(false)} className="self-end text-white/40 hover:text-white mb-10"><X size={22} /></button>
-            <div className="glam-title text-white text-3xl font-bold mb-8">GLAM<br /><span className="italic font-normal text-[#D2006E] text-xl">Cosmetick</span></div>
+            <div className="glam-title text-white text-3xl font-bold mb-8">GLAM<br /><span className="italic font-normal text-[#D2006E] text-xl">Cosmetic</span></div>
             <nav className="space-y-6">
               {NAV_LINKS.map(l => (
                 <button key={l.label} onClick={() => {
@@ -178,7 +178,7 @@ export default function Index({ cartCount = 0, onOpenCart }) {
           </p>
           <h1 className="glam-title text-white leading-none mb-2">
             <span className="block text-6xl md:text-8xl font-bold tracking-widest">{hero.title || 'GLAM'}</span>
-            <span className="block text-3xl md:text-4xl italic font-normal text-[#D2006E] mt-2">{hero.titleSub || 'Cosmetick'}</span>
+            <span className="block text-3xl md:text-4xl italic font-normal text-[#D2006E] mt-2">{hero.titleSub || 'Cosmetic'}</span>
           </h1>
           <p className="text-white/50 text-sm md:text-base mt-6 mb-10 leading-relaxed font-light">
             {hero.subtitle || 'Tu glamour, sin límites'}
@@ -302,7 +302,7 @@ export default function Index({ cartCount = 0, onOpenCart }) {
               <em className="italic font-normal text-[#D2006E]">glamour que inspira.</em>
             </h2>
             <p className="text-white/45 text-sm leading-relaxed max-w-sm mb-8">
-              {general?.aboutText || 'En GLAM Cosmetick encontrarás los mejores productos de maquillaje y cuidado personal.'}
+              {general?.aboutText || 'En GLAM Cosmetic encontrarás los mejores productos de maquillaje y cuidado personal.'}
             </p>
             <button onClick={() => goTo('/products')}
               className="flex items-center gap-3 text-sm font-bold tracking-[0.2em] uppercase text-[#D2006E] hover:gap-5 transition-all duration-300">
@@ -311,7 +311,7 @@ export default function Index({ cartCount = 0, onOpenCart }) {
           </div>
           <div className="relative">
             <div className="aspect-square rounded-2xl overflow-hidden border border-white/5">
-              <img src={general?.aboutImage || ''} alt="GLAM Cosmetick" className="w-full h-full object-cover" loading="lazy" />
+              <img src={general?.aboutImage || ''} alt="GLAM Cosmetic" className="w-full h-full object-cover" loading="lazy" />
             </div>
             <div className="absolute -bottom-5 -left-5 w-28 h-28 rounded-full bg-[#D2006E]/15 border border-[#D2006E]/30 flex items-center justify-center text-center p-3">
               <span className="text-[#D2006E] text-[9px] font-bold tracking-widest uppercase leading-tight">Beauty<br />Power</span>
@@ -340,7 +340,7 @@ export default function Index({ cartCount = 0, onOpenCart }) {
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="md:col-span-2">
             <p className="glam-title text-2xl text-white font-bold tracking-widest mb-1">GLAM</p>
-            <p className="glam-title italic text-[#D2006E] text-lg mb-4">Cosmetick</p>
+            <p className="glam-title italic text-[#D2006E] text-lg mb-4">Cosmetic</p>
             <p className="text-sm leading-relaxed max-w-xs">Maquillaje y belleza premium. Calidad, glamour y los mejores productos para que brilles siempre.</p>
             <div className="flex gap-4 mt-5">
               <a href={general?.instagramUrl || '#'} target="_blank" rel="noreferrer" className="hover:text-[#D2006E] transition-colors"><Instagram size={17} strokeWidth={1.5} /></a>
@@ -369,7 +369,7 @@ export default function Index({ cartCount = 0, onOpenCart }) {
           </div>
         </div>
         <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
-          <p>© {new Date().getFullYear()} GLAM Cosmetick. Todos los derechos reservados.</p>
+          <p>© {new Date().getFullYear()} GLAM Cosmetic. Todos los derechos reservados.</p>
           <p>Beauty · Glamour · Venezuela</p>
         </div>
       </footer>

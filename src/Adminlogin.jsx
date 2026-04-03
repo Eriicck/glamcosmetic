@@ -59,7 +59,7 @@ export default function AdminLogin() {
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-[#08020C]">
         <img
           src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1400&q=85"
-          alt="GLAM Cosmetick"
+          alt="GLAM Cosmetic"
           className="w-full h-full object-cover object-center opacity-60"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#08020C]/90 via-[#08020C]/40 to-transparent" />
@@ -70,7 +70,7 @@ export default function AdminLogin() {
           <p className="text-[#D2006E]/80 text-[10px] tracking-[0.45em] uppercase mb-4">Panel de administración</p>
           <h2 className="text-white leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
             <span className="block text-6xl font-bold">GLAM</span>
-            <span className="block text-3xl font-normal italic text-[#D2006E] mt-1">Cosmetick</span>
+            <span className="block text-3xl font-normal italic text-[#D2006E] mt-1">Cosmetic</span>
           </h2>
           <p className="text-white/35 text-sm mt-5 max-w-xs leading-relaxed">
             Gestioná tu tienda, productos y pedidos desde un solo lugar.
@@ -109,7 +109,7 @@ export default function AdminLogin() {
             <p className="text-[#D2006E]/70 text-[9px] tracking-[0.5em] uppercase mb-3">Panel Admin</p>
             <h1 className="text-white leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
               <span className="block text-4xl font-bold tracking-widest">GLAM</span>
-              <span className="block text-xl italic font-normal text-[#D2006E]">Cosmetick</span>
+              <span className="block text-xl italic font-normal text-[#D2006E]">Cosmetic</span>
             </h1>
             <div className="mt-4 flex items-center justify-center gap-2">
               <div className="h-px w-8 bg-[#D2006E]/40" />
@@ -178,7 +178,7 @@ export default function AdminLogin() {
           </form>
 
           <p className="text-center text-white/15 text-[10px] tracking-widest uppercase mt-16">
-            GLAM Cosmetick © {new Date().getFullYear()}
+            GLAM Cosmetic © {new Date().getFullYear()}
           </p>
         </div>
       </div>

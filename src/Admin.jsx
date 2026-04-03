@@ -1,5 +1,5 @@
 /**
- * ADMIN.JSX — Panel de control GLAM Cosmetick
+ * ADMIN.JSX — Panel de control GLAM Cosmetic
  * Basado en el modelo U.RRIOLA con identidad GLAM
  * ─────────────────────────────────────────────
  * ✅ Hero: slideshow de imágenes o video (mp4/webm) — URL o subida local
@@ -54,7 +54,7 @@ const DEFAULT_CONFIG = {
     overlayOpacity: 50,
     tagline:   'Beauty · Power',
     title:     'GLAM',
-    titleSub:  'Cosmetick',
+    titleSub:  'Cosmetic',
     subtitle:  'Tu glamour, sin límites',
   },
   cta: {
@@ -85,7 +85,7 @@ const DEFAULT_CONFIG = {
     instagramUrl: '#',
     facebookUrl:  '#',
     aboutTitle:   'Belleza que empodera, glamour que inspira.',
-    aboutText:    'En GLAM Cosmetick encontrarás los mejores productos de maquillaje y cuidado personal. Calidad premium, precios accesibles.',
+    aboutText:    'En GLAM Cosmetic encontrarás los mejores productos de maquillaje y cuidado personal. Calidad premium, precios accesibles.',
     aboutImage:   'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=800&q=80',
   },
 };
@@ -377,7 +377,7 @@ function SettingsDrawer({ isOpen, onClose, config, onChange }) {
                 <div className="grid grid-cols-2 gap-4">
                   <Field label="Tagline"><input className={S.input} value={h.tagline||''} onChange={e=>uHero('tagline',e.target.value)} placeholder="Beauty · Power"/></Field>
                   <Field label="Título"><input className={S.input} value={h.title||''} onChange={e=>uHero('title',e.target.value)} placeholder="GLAM"/></Field>
-                  <Field label="Subtítulo cursiva"><input className={S.input} value={h.titleSub||''} onChange={e=>uHero('titleSub',e.target.value)} placeholder="Cosmetick"/></Field>
+                  <Field label="Subtítulo cursiva"><input className={S.input} value={h.titleSub||''} onChange={e=>uHero('titleSub',e.target.value)} placeholder="Cosmetic"/></Field>
                   <Field label="Frase hero"><input className={S.input} value={h.subtitle||''} onChange={e=>uHero('subtitle',e.target.value)} placeholder="Tu glamour, sin límites"/></Field>
                 </div>
               </div>
@@ -948,7 +948,7 @@ function Dashboard({ products, config, onNavigate, onImportMock, onCSVImport, im
     <div className="space-y-8">
       <div>
         <h2 className="text-xl font-bold text-gray-900 mb-1">Dashboard</h2>
-        <p className="text-sm text-gray-400">Bienvenida al panel de GLAM Cosmetick ✨</p>
+        <p className="text-sm text-gray-400">Bienvenida al panel de GLAM Cosmetic ✨</p>
       </div>
 
       {/* Stats */}

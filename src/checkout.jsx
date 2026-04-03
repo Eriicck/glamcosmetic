@@ -62,7 +62,7 @@ export default function Checkout({ cart = [], cartCount = 0, onOpenCart }) {
     const items  = cart.map(i => `  • ${i.quantity}x ${i.name} → $${(Number(i.price) * i.quantity).toFixed(2)}`).join('\n');
     const metodo = form.metodo === 'shipping' ? '🚚 Envío a domicilio' : '🏪 Retiro en tienda';
 
-    let msg = `*¡Hola! Quiero hacer un pedido en GLAM Cosmetick* 💄✨\n\n`;
+    let msg = `*¡Hola! Quiero hacer un pedido en GLAM Cosmetic* 💄✨\n\n`;
     msg += `*👤 Clienta:*\n  ${form.nombre} ${form.apellido}\n`;
     if (form.email)    msg += `  ${form.email}\n`;
     if (form.telefono) msg += `  ${form.telefono}\n`;
