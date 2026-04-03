@@ -1,4 +1,4 @@
-// ─── DATOS GLAM COSMETICK ─────────────────────────────────────────────────────
+// ─── DATOS GLAM. COSMETICK ─────────────────────────────────────────────────────
 // Productos mock para mostrar la web mientras se cargan los reales desde Firebase.
 // Cuando hagas la importación real desde el admin, estos se reemplazan.
 
