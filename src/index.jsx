@@ -13,7 +13,7 @@ const LogoLight = ({ className = 'h-10 w-auto' }) => (
 );
 // Logo oscuro (para navbar scrolleada / fondo blanco)
 const LogoDark = ({ className = 'h-10 w-auto' }) => (
-  <img src="/12.svg" alt="GLAM Cosmetic" className={className} />
+  <img src="/glam-negro.svg" alt="GLAM Cosmetic" className={className} />
 );
 // Logo blanco sólido (admin / fondo muy oscuro)
 const LogoWhite = ({ className = 'h-10 w-auto' }) => (
@@ -152,13 +152,13 @@ export default function Index({ cartCount = 0, onOpenCart }) {
       {/* ══ NAVBAR ══════════════════════════════════════════════ */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500
         ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-sm' : 'bg-transparent'}`}>
-        <div className="max-w-7xl mx-auto px-5 md:px-10 h-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-5 md:px-10 h-11 flex items-center justify-between">
 
           {/* Logo — cambia según scroll */}
           <button onClick={() => goTo('/')} className="flex-shrink-0">
             {scrolled
-              ? <LogoDark  className="h-9 w-auto" />
-              : <LogoLight className="h-9 w-auto" />
+              ? <LogoDark  className="h-6 w-auto" />
+              : <LogoLight className="h-6 w-auto" />
             }
           </button>
 
@@ -201,7 +201,7 @@ export default function Index({ cartCount = 0, onOpenCart }) {
             style={{ animation: 'slideInRight .3s ease' }}>
             <button onClick={() => setMenuOpen(false)} className="self-end text-white/40 hover:text-white mb-10"><X size={22} /></button>
             <div className="mb-8">
-              <LogoLight className="h-12 w-auto" />
+              <LogoLight className="h-8 w-auto" />
             </div>
             <nav className="space-y-6">
               {NAV_LINKS.map(l => (
@@ -468,7 +468,7 @@ export default function Index({ cartCount = 0, onOpenCart }) {
           <div className="md:col-span-2">
             {/* Logo blanco en footer */}
             <div className="mb-4">
-              <LogoLight className="h-14 w-auto" />
+              <LogoLight className="h-8 w-auto" />
             </div>
             <p className="text-sm leading-relaxed max-w-xs">
               Maquillaje y belleza premium. Calidad, glamour y los mejores productos para que brilles siempre.
