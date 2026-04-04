@@ -926,16 +926,18 @@ function ProductsSection({ products, setProducts, onToast, initialFilter = 'all'
 
 // ─── DASHBOARD ─────────────────────────────────────────────
 function Dashboard({ products, config, onNavigate, onImportMock, onCSVImport, importing, importDone }) {
-  const total   = products.length;
-  const visible = products.filter(p=>p.visible).length;
-  const offers  = products.filter(p=>p.inOffer).length;
-  const noStock = products.filter(p=>p.stock===false).length;
+  const total     = products.length;
+  const visible   = products.filter(p=>p.visible).length;
+  const offers    = products.filter(p=>p.inOffer).length;
+  const noStock   = products.filter(p=>p.stock===false).length;
+  const lowStock  = products.filter(p=>p.lowStock===true).length;
 
   const STATS = [
-    { label: 'Total productos', value: total,   bg: 'bg-pink-50',   color: 'text-[#D2006E]' },
-    { label: 'Visibles',        value: visible, bg: 'bg-purple-50', color: 'text-purple-600' },
-    { label: 'En oferta',       value: offers,  bg: 'bg-rose-50',   color: 'text-rose-500'   },
-    { label: 'Sin stock',       value: noStock, bg: 'bg-gray-50',   color: 'text-gray-500'   },
+    { label: 'Total productos', value: total,    bg: 'bg-pink-50',   color: 'text-[#D2006E]', filter: 'all'      },
+    { label: 'Visibles',        value: visible,  bg: 'bg-purple-50', color: 'text-purple-600', filter: 'all'     },
+    { label: 'En oferta',       value: offers,   bg: 'bg-rose-50',   color: 'text-rose-500',   filter: 'offer'   },
+    { label: 'Sin stock',       value: noStock,  bg: 'bg-gray-50',   color: 'text-gray-500',   filter: 'nostock' },
+    { label: 'Poco stock',      value: lowStock, bg: 'bg-amber-50',  color: 'text-amber-500',  filter: 'lowstock'},
   ];
 
   const ACCIONES = [
@@ -951,13 +953,15 @@ function Dashboard({ products, config, onNavigate, onImportMock, onCSVImport, im
         <p className="text-sm text-gray-400">Bienvenida al panel de GLAM Cosmetic ✨</p>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Stats — clickeables */}
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         {STATS.map(s=>(
-          <div key={s.label} className={`rounded-xl p-4 ${s.bg}`}>
+          <button key={s.label} onClick={()=>onNavigate('products', s.filter)}
+            className={`rounded-xl p-4 ${s.bg} text-left hover:scale-[1.02] transition-transform cursor-pointer group`}>
             <p className={`text-3xl font-bold ${s.color}`}>{s.value}</p>
             <p className="text-xs text-gray-500 mt-1 font-medium">{s.label}</p>
-          </div>
+            <p className="text-[10px] text-gray-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Ver →</p>
+          </button>
         ))}
       </div>
 
@@ -1015,11 +1019,14 @@ function Dashboard({ products, config, onNavigate, onImportMock, onCSVImport, im
               </div>
               <div>
                 <p className="text-sm font-bold text-gray-900">Importación CSV masiva</p>
-                <p className="text-xs text-gray-400">Columnas: <code className="bg-pink-50 px-1 rounded text-[#D2006E]">brand, name, price, category, image, stock</code></p>
+                <p className="text-xs text-gray-400 leading-relaxed">
+                  Columnas: <code className="bg-pink-50 px-1 rounded text-[#D2006E] text-[10px]">codigo, nombre, marca, descripcion, bs_f, usd, image, image2, image3</code>
+                  <br/>Las celdas vacías no generan error.
+                </p>
               </div>
             </div>
-            <div className="flex gap-2">
-              <a href="data:text/csv;charset=utf-8,brand,name,price,category,image,stock%0AMAYBELLINE,Base Fit Me,18.00,rostro,,true"
+            <div className="flex gap-2 flex-wrap">
+              <a href="data:text/csv;charset=utf-8,codigo,nombre,marca,descripcion,bs_f,usd,image,image2,image3%0A001,Base Fit Me,MAYBELLINE,Base larga duraci%C3%B3n,540.00,18.00,https://...,,"
                 download="plantilla_glam.csv" className={`${S.btn} ${S.btnGhost} text-xs`}>↓ Plantilla CSV</a>
               <label className={`${S.btn} ${S.btnPrimary} text-xs cursor-pointer`}>
                 ↑ Subir CSV<input type="file" accept=".csv" onChange={onCSVImport} className="hidden"/>
@@ -1141,28 +1148,54 @@ export default function Admin() {
     } finally { setImporting(false); }
   };
 
-  // Importar desde CSV
+  // Importar desde CSV — formato nuevo: codigo,nombre,marca,descripcion,bs_f,usd,image,image2,image3
   const handleCSVImport = async (e) => {
     const file = e.target.files[0]; if (!file) return;
     const text    = await file.text();
     const lines   = text.trim().split('\n');
-    const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+    const headers = lines[0].split(',').map(h =>
+      h.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    );
     const existingNames = new Set(products.map(p => p.name?.trim().toLowerCase()));
     let count = 0;
     for (let i = 1; i < lines.length; i++) {
-      const vals = lines[i].split(',');
+      // Soporta comas dentro de valores con comillas
+      const vals = lines[i].match(/(".*?"|[^,]+|(?<=,)(?=,)|^(?=,)|(?<=,)$)/g) || lines[i].split(',');
       const row  = {};
-      headers.forEach((h, idx) => { row[h] = vals[idx]?.trim() || ''; });
-      if (!row.name || existingNames.has(row.name.trim().toLowerCase())) continue;
+      headers.forEach((h, idx) => { row[h] = (vals[idx] || '').replace(/^"|"$/g, '').trim(); });
+
+      // Acepta columnas nuevas (nombre/usd) y también las viejas (name/price)
+      const nombre = row.nombre || row.name || '';
+      if (!nombre) continue;
+      if (existingNames.has(nombre.trim().toLowerCase())) continue;
+
+      const img1   = row.image  || row.imagen  || '';
+      const img2   = row.image2 || row.imagen2 || '';
+      const img3   = row.image3 || row.imagen3 || '';
+      const images = [img1, img2, img3].filter(Boolean);
+
       try {
         await createProduct({
-          brand: row.brand||'', name: row.name, price: parseFloat(row.price)||0,
-          category: row.category||'rostro', image: row.image||'', images: row.image?[row.image]:[],
-          stock: row.stock!=='false', visible: true, inOffer: false, offerPrice: null,
-          hasTon: false, tonValue: '', lowStock: false, description: '', rating: 4.5, reviews: 0,
+          brand:       row.marca    || row.brand    || '',
+          name:        nombre,
+          price:       parseFloat(row.usd || row.price || 0) || 0,
+          category:    row.categoria|| row.category || 'rostro',
+          description: row.descripcion || row.description || '',
+          image:       img1,
+          images:      images.length > 0 ? images : (img1 ? [img1] : []),
+          stock:       row.stock !== 'false',
+          visible:     true,
+          inOffer:     false,
+          offerPrice:  null,
+          hasTon:      false,
+          tonValue:    '',
+          lowStock:    false,
+          rating:      4.5,
+          reviews:     0,
         });
         count++;
-      } catch (err) { console.error(err); }
+        existingNames.add(nombre.trim().toLowerCase());
+      } catch (err) { console.error('CSV row error:', err); }
     }
     showToast(`✅ ${count} productos importados desde CSV`);
     e.target.value = '';
@@ -1183,7 +1216,7 @@ export default function Admin() {
 
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <span className="text-xl font-bold tracking-widest" style={{ fontFamily: "'Playfair Display', serif" }}>GLAM</span>
+            <img src="/logo-dark.svg" alt="GLAM" className="h-8 w-auto" />
             <span className="text-[9px] tracking-[0.3em] uppercase text-[#D2006E] bg-pink-50 px-2.5 py-1 rounded-full font-bold border border-pink-200">Admin</span>
           </div>
 
