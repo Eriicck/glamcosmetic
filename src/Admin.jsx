@@ -24,8 +24,9 @@ import {
 import { MOCK_PRODUCTS, WHATSAPP_NUMBER } from './data';
 import {
   patchProduct, deleteProduct as deleteProductFromFirebase,
-  createProduct, uploadToCloudinary, subscribeProducts
+  createProduct, uploadToCloudinary, subscribeProducts, saveConfigToFirebase, getConfigFromFirebase
 } from './firebase';
+
 
 // ─── PERSISTENCIA ─────────────────────────────────────────
 const LS_KEY      = 'glam_admin_config';
@@ -1103,12 +1104,17 @@ export default function Admin() {
 
   const handleChange = useCallback(cfg => { setConfig(cfg); setDirty(true); }, []);
 
-  const handleSave = () => {
-    const { products: _, ...cfgClean } = config;
-    saveConfig(cfgClean);
-    setDirty(false);
-    showToast('¡Configuración guardada!');
-  };
+const handleSave = async () => {
+  const { products: _, ...cfgClean } = config;
+  saveConfig(cfgClean);
+  setDirty(false);
+  try {
+    await saveConfigToFirebase(cfgClean);
+    showToast('✅ Guardado — todos los dispositivos ven el cambio');
+  } catch {
+    showToast('⚠ Guardado solo local', 'error');
+  }
+};
 
   const handleReset = () => {
     if (!window.confirm('¿Restaurar configuración visual por defecto?')) return;
@@ -1216,7 +1222,7 @@ export default function Admin() {
 
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <img src="/12.svg" alt="GLAM" className="h-8 w-auto" />
+            <img src="/glam-negro.svg" alt="GLAM" className="h-7 w-auto" />
             <span className="text-[9px] tracking-[0.3em] uppercase text-[#D2006E] bg-pink-50 px-2.5 py-1 rounded-full font-bold border border-pink-200">Admin</span>
           </div>
 

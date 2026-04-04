@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore, collection, doc,
-  getDocs, addDoc, updateDoc, deleteDoc,
+  getDocs, addDoc, updateDoc, deleteDoc, getDoc, setDoc,
   query, orderBy, onSnapshot, serverTimestamp, writeBatch
 } from 'firebase/firestore';
 
@@ -55,25 +55,21 @@ export async function deleteProduct(id) {
   await deleteDoc(doc(db, 'products', id));
 }
 
-// ── PRODUCTOS — sincronizar ────────────────────────────────
+// ── PRODUCTOS — sincronizar batch ──────────────────────────
 export async function syncProductsToFirebase(products) {
   const batch = writeBatch(db);
   const updates = [];
-
   for (const p of products) {
     const clean = sanitize(p);
     if (p.firebaseId) {
-      const ref = doc(db, 'products', p.firebaseId);
-      batch.update(ref, { ...clean, updatedAt: serverTimestamp() });
+      batch.update(doc(db, 'products', p.firebaseId), { ...clean, updatedAt: serverTimestamp() });
     } else {
       const ref = doc(collection(db, 'products'));
       batch.set(ref, { ...clean, createdAt: serverTimestamp() });
       updates.push({ localId: p.id, ref });
     }
   }
-
   await batch.commit();
-
   return products.map(p => {
     if (p.firebaseId) return p;
     const u = updates.find(x => x.localId === p.id);
@@ -81,7 +77,7 @@ export async function syncProductsToFirebase(products) {
   });
 }
 
-// ── PRODUCTO — patch ───────────────────────────────────────
+// ── PRODUCTO — patch campos específicos ───────────────────
 export async function patchProduct(firebaseId, fields) {
   if (!firebaseId) return;
   await updateDoc(doc(db, 'products', firebaseId), {
@@ -107,14 +103,45 @@ export async function saveOrder({ form, cart, total }) {
   return ref.id;
 }
 
+// ── CONFIG VISUAL — guardar en Firebase ────────────────────
+// Al guardar desde el Admin, todos los dispositivos ven el cambio.
+export async function saveConfigToFirebase(config) {
+  try {
+    // JSON.parse/stringify elimina undefined que Firestore rechaza
+    const clean = JSON.parse(JSON.stringify(config));
+    await setDoc(doc(db, 'site_config', 'visual'), {
+      ...clean,
+      _updatedAt: serverTimestamp(),
+    });
+  } catch (err) {
+    console.error('saveConfigToFirebase:', err);
+    throw err;
+  }
+}
+
+// ── CONFIG VISUAL — leer desde Firebase ───────────────────
+// El frontend llama esto al montar para tener la config más reciente.
+export async function getConfigFromFirebase() {
+  try {
+    const snap = await getDoc(doc(db, 'site_config', 'visual'));
+    if (!snap.exists()) return null;
+    const data = snap.data();
+    delete data._updatedAt;
+    return data;
+  } catch (err) {
+    console.error('getConfigFromFirebase:', err);
+    return null;
+  }
+}
+
 // ── CLOUDINARY ─────────────────────────────────────────────
 export async function uploadToCloudinary(file) {
   const isVideo = file.type.startsWith('video/');
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('upload_preset', 'urriola_uploads'); // reemplazar
+  formData.append('upload_preset', 'urriola_uploads'); // ← reemplazar por el de GLAM
   const endpoint  = isVideo ? 'video' : 'image';
-  const cloudName = 'dls6empbg'; // reemplazar
+  const cloudName = 'dls6empbg'; // ← reemplazar por el cloud name de GLAM
   const res  = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/${endpoint}/upload`, { method: 'POST', body: formData });
   const data = await res.json();
   if (data.error) throw new Error(data.error.message);
