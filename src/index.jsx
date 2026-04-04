@@ -6,6 +6,8 @@ import {
 } from 'lucide-react';
 import { getAdminConfig } from './Admin';
 import { getConfigFromFirebase } from './firebase';
+import { Helmet } from "react-helmet-async";
+
 
 const LS_KEY = 'glam_admin_config';
 
@@ -116,7 +118,12 @@ export default function Index({ cartCount = 0, onOpenCart }) {
   const overlayAlpha = (hero?.overlayOpacity || 50) / 100;
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 overflow-x-hidden" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+        
+
+    <div className="min-h-screen bg-white text-gray-900 overflow-x-hidden" 
+    style={{ fontFamily: "'DM Sans', sans-serif" }}>
+      
+      
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
         @keyframes marquee   { from{transform:translateX(0)} to{transform:translateX(-50%)} }
@@ -245,19 +252,27 @@ export default function Index({ cartCount = 0, onOpenCart }) {
       {visibleCats.length > 0 && (
         <section ref={explorRef} className="relative py-20 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute inset-[-20%] bg-cover bg-center"
-              style={{ backgroundImage:'url(https://res.cloudinary.com/dls6empbg/image/upload/q_auto/f_auto/v1775317202/parallaxwebp2_ry97zb.webp)', transform:`translateY(${parallaxExplor}px)`, willChange:'transform' }}/>
-            <div className="absolute inset-0 bg-[#0C0210]/78"/>
-          </div>
-          <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
-            <div className="text-center mb-12 glam-reveal">
-              <p className="text-[#D2006E] text-[10px] tracking-[0.4em] uppercase mb-3 font-semibold">Explorar</p>
-              <h2 className="glam-title text-4xl md:text-5xl font-bold text-white">
-                Shop by <em className="italic font-normal text-[#D2006E]">category</em>
-              </h2>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-              {visibleCats.map((cat,i) => (
+            
+            
+            <div className="absolute inset-0 bg-cover bg-center"
+              style={{
+                    backgroundImage: 'url(https://res.cloudinary.com/dls6empbg/image/upload/q_auto/f_auto/v1775317203/photo-1522338242992-e1a54906a8da_k3opyl.jpg)',
+                    backgroundAttachment: 'fixed',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                    }}
+                />                  
+             <div className="absolute inset-0 bg-[#0C0210]/78"/>
+                 </div>
+                     <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
+                     <div className="text-center mb-12 glam-reveal">
+                         <p className="text-[#D2006E] text-[10px] tracking-[0.4em] uppercase mb-3 font-semibold">Explorar</p>
+                          <h2 className="glam-title text-4xl md:text-5xl font-bold text-white">
+                          Shop by <em className="italic font-normal text-[#D2006E]">category</em>
+                           </h2>
+                         </div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        {visibleCats.map((cat,i) => (
                 <button key={cat.id} onClick={() => goTo('/products')}
                   className={`glam-reveal glam-reveal-d${Math.min(i+1,4)} group relative overflow-hidden rounded-2xl aspect-[3/4] bg-gray-800 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1`}>
                   {cat.img && <img src={cat.img} alt={cat.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy"/>}
