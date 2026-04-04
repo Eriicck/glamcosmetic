@@ -9,11 +9,11 @@ import { getAdminConfig } from './Admin';
 // ─── SVG LOGOS inline ─────────────────────────────────────────────────────────
 // Logo claro (para fondo oscuro / hero / footer)
 const LogoLight = ({ className = 'h-10 w-auto' }) => (
-  <img src="/logo-light.svg" alt="GLAM Cosmetic" className={className} />
+  <img src="/glamblancoadmin.svg" alt="GLAM Cosmetic" className={className} />
 );
 // Logo oscuro (para navbar scrolleada / fondo blanco)
 const LogoDark = ({ className = 'h-10 w-auto' }) => (
-  <img src="/logo-dark.svg" alt="GLAM Cosmetic" className={className} />
+  <img src="/12.svg" alt="GLAM Cosmetic" className={className} />
 );
 // Logo blanco sólido (admin / fondo muy oscuro)
 const LogoWhite = ({ className = 'h-10 w-auto' }) => (
