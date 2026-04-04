@@ -135,7 +135,7 @@ export default function Index({ cartCount = 0, onOpenCart }) {
       `}</style>
 
       {/* ══ NAVBAR ══════════════════════════════════════════ */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-sm' : 'bg-transparent'}`}>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-150 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-sm' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-5 md:px-10 h-12 flex items-center justify-between">
           <button onClick={() => goTo('/')} className="flex items-center h-10">
             <img src={scrolled ? '/glam-negro.svg' : '/glamblancoadmin.svg'} alt="GLAM" className="h-7 w-auto transition-all duration-300"
@@ -246,7 +246,7 @@ export default function Index({ cartCount = 0, onOpenCart }) {
         <section ref={explorRef} className="relative py-20 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute inset-[-20%] bg-cover bg-center"
-              style={{ backgroundImage:'url(https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=1920&q=80)', transform:`translateY(${parallaxExplor}px)`, willChange:'transform' }}/>
+              style={{ backgroundImage:'url(https://res.cloudinary.com/dls6empbg/image/upload/q_auto/f_auto/v1775317202/parallaxwebp2_ry97zb.webp)', transform:`translateY(${parallaxExplor}px)`, willChange:'transform' }}/>
             <div className="absolute inset-0 bg-[#0C0210]/78"/>
           </div>
           <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
@@ -376,24 +376,37 @@ export default function Index({ cartCount = 0, onOpenCart }) {
           {cta?.src ? (
             <>
               <div className="absolute inset-[-20%] bg-cover bg-center"
-                style={{ backgroundImage:`url(${cta.src})`, transform:`translateY(${parallaxCta}px)`, willChange:'transform' }}/>
+                style={{ backgroundImage:`url(${cta.src})`,
+                         transform:`translateY(${parallaxCta}px)`,
+                         willChange:'transform' }}/>
               <div className="absolute inset-0" style={{background:`rgba(12,2,16,${(cta.overlayOpacity||40)/100})`}}/>
             </>
           ) : (
-            // Sin imagen: fondo degradado con parallax decorativo
+            // Fondo fijo con imagen Cloudinary + overlay regulable desde admin
             <>
-              <div className="absolute inset-0 bg-[#FDF4F8]"/>
-              <div className="absolute inset-[-20%]"
-                style={{ background:'radial-gradient(ellipse at 30% 50%, rgba(210,0,110,0.08) 0%, transparent 60%)', transform:`translateY(${parallaxCta * 0.5}px)`, willChange:'transform' }}/>
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: 'url(https://res.cloudinary.com/dls6empbg/image/upload/q_auto/f_auto/v1775317876/parallax-look_zjbzlf.webp)',
+                  backgroundAttachment: 'fixed',   // fijo al hacer scroll
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              />
+              {/* Overlay — oscuridad regulable desde el admin en cta.overlayOpacity */}
+              <div
+                className="absolute inset-0"
+                style={{ background: `rgba(12,2,16,${(cta?.overlayOpacity ?? 35) / 100})` }}
+              />
             </>
           )}
         </div>
 
         <div className="relative z-10">
-          <p className={`text-[10px] tracking-[0.5em] uppercase mb-4 font-semibold ${cta?.src ? 'text-[#D2006E]' : 'text-[#D2006E]'}`}>
+          <p className="text-[#D2006E] text-[10px] tracking-[0.5em] uppercase mb-4 font-semibold">
             {cta?.eyebrow||'Explorar'}
           </p>
-          <h2 className={`glam-title text-5xl md:text-7xl font-bold mb-2 ${cta?.src?'text-white':'text-[#0D0D12]'}`}>
+          <h2 className="glam-title text-5xl md:text-7xl font-bold mb-2 text-white">
             {cta?.title||'Tu look,'}
           </h2>
           <h2 className="glam-title text-5xl md:text-7xl italic font-normal text-[#D2006E] mb-10">
